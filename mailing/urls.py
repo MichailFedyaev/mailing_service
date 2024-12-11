@@ -4,11 +4,12 @@ from . import views
 app_name = "mailing"
 
 urlpatterns = [
+    path("", views.IndexView.as_view(), name="index"),
     path("recipient_list", views.RecipientListView.as_view(), name="recipient_list"),
     path("recipient/create", views.RecipientCreateView.as_view(), name="recipient_create"),
     path("recipient/<int:pk>/update", views.RecipientUpdateView.as_view(), name="recipient_update"),
     path("recipient/<int:pk>/delete",views.RecipientDeleteView.as_view(), name="recipient_delete"),
-    path("message_list", views.MessageListView.as_view(),name="message_list"),
+    path("message_list", views.MessageListView.as_view(), name="message_list"),
     path("message/create", views.MessageCreateView.as_view(), name="message_create"),
     path("message/<int:pk>/update", views.MessageUpdateView.as_view(), name="message_update"),
     path("message/<int:pk>/delete", views.MessageDeleteView.as_view(), name="message_delete"),

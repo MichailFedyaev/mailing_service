@@ -2,8 +2,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from mailing.forms import MessageForm, RecipientForm
+from mailing.forms import MessageForm, RecipientForm, MailingForm
 from mailing.models import Mailing, MailingAttempt, Message, Recipient
+
+
+class IndexView(LoginRequiredMixin, TemplateView):
+    template_name = "mailing/index.html"
 
 
 class RecipientListView(LoginRequiredMixin, ListView):
@@ -54,7 +58,20 @@ class MailingListView(LoginRequiredMixin, ListView):
 
 class MailingCreateView(LoginRequiredMixin, CreateView):
     model = Mailing
+    form_class = MailingForm
     success_url = reverse_lazy("mailing:mailing_list")
+
+    def form_valid(self, form):
+        mailing = form.save()
+        user = self.request.user
+        mailing.owner = user
+        mailing.save()
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
 
 
 class MailingUpdateView(LoginRequiredMixin, UpdateView):

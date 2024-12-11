@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView
 from config.settings import DEFAULT_FROM_EMAIL
 from .forms import CustomUserCreationForm
 from .models import CustomUser
+from django.http import HttpResponseForbidden
 
 
 class UserListView(LoginRequiredMixin, ListView):
@@ -31,9 +32,19 @@ class RegisterView(CreateView):
             subject="Подтверждение почты",
             message=f"Приветствуем вас на нашем сайте Перейдите по ссылке для подтверждения эл. почты {url}",
             from_email=DEFAULT_FROM_EMAIL,
-            recipient_list=[user.email],
-        )
+            recipient_list=[user.email],)
         return super().form_valid(form)
+
+
+class UserBlockView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        system_user = get_object_or_404(CustomUser, pk=pk)
+        if not request.user.has_perm("users.can_block_user"):
+            return HttpResponseForbidden("У вас нет прав для блокировки пользователя")
+
+        system_user.is_active = not system_user.is_active
+        system_user.save()
+        return redirect("users:users")
 
 
 def email_verification(request, token):

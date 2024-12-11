@@ -68,8 +68,8 @@ class Mailing(models.Model):
         return f'Рассылка №{self.pk}, Тема письма: {subject}'
 
     class Meta:
-        verbose_name = 'Сообщение'
-        verbose_name_plural = 'Сообщения'
+        verbose_name = 'Рассылка'
+        verbose_name_plural = 'Рассылки'
         ordering = ['id']
         permissions = [('can_cancel_mailing', 'Can cancel mailing')]
 
