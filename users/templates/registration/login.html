@@ -1,9 +1,8 @@
-<!-- registration/login.html -->
 {% extends "mailing/base.html" %}
+{% load crispy_forms_tags %}
 {% block title %}Вход{% endblock %}
 
 {% block content %}
-
 
 <div class="container">
     <div class="row d-flex justify-content-center text-start">
@@ -13,11 +12,17 @@
                     <h2 class="text-center mb-4">Вход</h2>
                     <form method="post">
                         {% csrf_token %}
+                        {{ form|crispy }}
                         <button type="submit" class="btn btn-primary w-100">Войти</button>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row text-start">
     </div>
 </div>
 

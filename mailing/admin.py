@@ -9,5 +9,5 @@ admin.site.register(MailingAttempt)
 @admin.register(Mailing)
 class MailingAdmin(admin.ModelAdmin):
 
-    list_display = ("id", "first_send_at", "finish_send_at", "status", "message")
+    list_display = ("id", "status", "message", "owner")
     search_fields = ("title", "content")

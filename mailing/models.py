@@ -65,7 +65,10 @@ class Mailing(models.Model):
 
     def __str__(self):
         subject = self.message.title if self.message else 'Тема не указана'
-        return f'Рассылка №{self.pk}, Тема письма: {subject}'
+        recipient_count = self.recipients.count()
+        return (f'''Рассылка №{self.pk}.
+                Тема письма: {subject}.
+                Количество получателей: {recipient_count}.''')
 
     class Meta:
         verbose_name = 'Рассылка'
@@ -85,11 +88,11 @@ class MailingAttempt(models.Model):
 
     attempted_at = models.DateTimeField(verbose_name="Дата и время попытки отправки")
     status = models.CharField(max_length=7, choices=STATUS_CHOICES, verbose_name='Статус')
-    mailing_response = models.TextField(null=True, blank=True, verbose_name='Ответ сервера')
+    mail_server_response = models.TextField(null=True, blank=True, verbose_name='Ответ сервера')
     mailing = models.ForeignKey(Mailing, on_delete=models.CASCADE, related_name='attempts', verbose_name='Рассылка')
 
     def __str__(self):
-        return f'Рассылка №{self.pk} - {self.attempted_at} ({self.status}).'
+        return f'{self.pk} - {self.attempted_at}'
 
     class Meta:
         verbose_name = 'Попытка рассылки'
