@@ -14,6 +14,12 @@ from django.http import HttpResponseForbidden
 class UserListView(LoginRequiredMixin, ListView):
     model = CustomUser
 
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        if user.groups.filter(name="Менеджер").exists():
+            return super().dispatch(request, *args, **kwargs)
+        return HttpResponseForbidden("Вы не можете просматривать/изменять/удалять этот объект.")
+
 
 class RegisterView(CreateView):
     form_class = CustomUserCreationForm
