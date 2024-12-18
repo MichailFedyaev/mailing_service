@@ -18,5 +18,5 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Сообщения загружены из фикстур успешно"))
         call_command("loaddata", "mailing_fixture.json", format="json")
         self.stdout.write(self.style.SUCCESS("Рассылки загружены из фикстур успешно"))
-        call_command("loaddata", "mailing_attempts_fixture.json", format="json")
+        call_command("loaddata", "mailing_attempt_fixture.json", format="json")
         self.stdout.write(self.style.SUCCESS("Попытки рассылок загружены из фикстур успешно"))
